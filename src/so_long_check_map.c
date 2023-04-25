@@ -6,7 +6,7 @@
 /*   By: lduthill <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/20 17:13:19 by lduthill          #+#    #+#             */
-/*   Updated: 2023/04/25 11:49:33 by lduthill         ###   ########.fr       */
+/*   Updated: 2023/04/25 18:50:08 by lduthill         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -49,7 +49,10 @@ int	check_collectable(t_vars *data)
 	int	x;
 	int	y;
 
-	data->collectables, data->exit, data->player, y = 0;
+	data->collectables = 0;
+       	data->exit = 0;
+       	data->player = 0;
+	y = 0;
 	while (y < data->height)
 	{
 		x = 0;
