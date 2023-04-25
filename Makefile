@@ -13,7 +13,7 @@ MLX_INCLUDE =	-Lmlx/ -lmlx -L/usr/lib/ -lXext -lX11 -lm -I ./ -I ./mlx/
 
 # This is all the source files we want to compile
 SRC_FOLDER	=	src/
-SRC_FILES	=	so_long.c so_long_map.c so_long_utils.c
+SRC_FILES	=	so_long.c so_long_map.c so_long_utils.c so_long_check_map.c so_long_controls.c 
 OBJS		=	$(addprefix $(SRC_FOLDER), $(SRC_FILES:%.c=%.o))
 
 # This is other projects we want to include to our source files

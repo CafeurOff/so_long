@@ -6,7 +6,7 @@
 /*   By: lduthill <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/29 10:38:36 by lduthill          #+#    #+#             */
-/*   Updated: 2023/03/29 14:51:53 by lduthill         ###   ########.fr       */
+/*   Updated: 2023/04/25 11:51:46 by lduthill         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,62 +14,73 @@
 
 // Read the .ber file with get_next_line and set the width and height of the map
 
-int	size_of_map(t_vars *data)
+int	size_of_map(t_vars *data, char **file)
 {
 	int		fd;
+	char	*line;
 
-	fd = open("map/map_01.ber", O_RDONLY);
-	data->width = ft_strlen(get_next_line(fd)) - 1;
-	data->height = 1;
-	while (get_next_line(fd))
+	fd = open(file[1], O_RDONLY);
+	line = get_next_line(fd);
+	data->width = ft_strlen(line);
+	data->height = 0;
+	while (line)
+	{
 		data->height++;
-    if (data->width < 3 || data->height < 3)
-        return (0);
-    return (1);
+		if ((int)ft_strlen(line) != data->width)
+		{
+			close(fd);
+			ft_free(data);
+			free(line);
+			return (1);
+		}
+		free(line);
+		line = get_next_line(fd);
+	}
+	close(fd);
+	return (0);
 }
 
-// Print the map in a 2D array
+// Get the map and allocate his memory
 
-void    print_map(t_vars *data)
+void	malloc_tab(t_vars *data, char **file)
 {
-    int    fd;
-    int     x;
-    int     y;
-    char    *line;
+	int		i;
+	int		fd;
 
-    line = "0";
-    fd = open("map/map_01.ber", O_RDONLY);
-    while (line != NULL)
-    {
-        x = 0;
-        line = get_next_line(fd);
-        if (line == NULL)
-            break ;
-        while (line[x])
-        {
-            data->map[y][x] = line[x];
-            x++;
-        }
-        y++;        
-    }
+	fd = open(file[1], O_RDONLY);
+	i = 0;
+	data->map = malloc(sizeof(char **) * data->height);
+	data->map2 = malloc(sizeof(char **) * data->height);
+	while (i < data->height)
+	{
+		data->map[i] = get_next_line(fd);
+		i++;
+		ft_printf("%s", data->map[i - 1]);
+	}
+	free(get_next_line(fd));
+	close(fd);
+	fd = open(file[1], O_RDONLY);
+	i = 0;
+	while (i < data->height)
+	{
+		data->map2[i] = get_next_line(fd);
+		i++;
+	}
+	free(get_next_line(fd));
+	close(fd);
 }
 
-// Verify if the map have a exit, a player and at least one collectible and the map is surrounded by walls
-
-
-// Check errors in the map
-
-int		check_map(t_vars **map)
+void	ft_free(t_vars *data)
 {
-    int		i;
-    
-    while (t_vars->map)
-    {
-        i = 0;
-        if (vars.map[i] != '1' && vars.map[i] != '0' && vars.map[i] != 'C' && vars.map[i] != 'E' && vars.map[i] != 'P' && vars.map[i] != '\n')
-            return (0);
-        i++;
-    }
-    return (1);
-}
+	int	i;
 
+	i = 0;
+	while (i < data->height)
+	{
+		free(data->map[i]);
+		free(data->map2[i]);
+		i++;
+	}
+	free(data->map);
+	free(data->map2);
+}

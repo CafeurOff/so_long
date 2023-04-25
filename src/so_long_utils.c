@@ -6,54 +6,53 @@
 /*   By: lduthill <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/29 10:49:29 by lduthill          #+#    #+#             */
-/*   Updated: 2023/03/29 12:35:55 by lduthill         ###   ########.fr       */
+/*   Updated: 2023/04/25 11:51:12 by lduthill         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "so_long.h"
 
-// Check if arround the player there is a wall
+// Check if the map is a .ber
 
-int     check_arround(t_vars *data)
+int	ft_checkfile(char *t)
 {
-    int     i;
-    int     x;
-    int     y;
+	int		i;
+	int		j;
+	char	*l;
 
-    x = 0;
-    y = 0;
-    i = 0;
-    while (data->map)
-    {  
-        while (data->map[y][x] != '\0')
-        {
-            if (data->map[y][x] == 'P')
-            {
-              if (data->map[y - 1][x] == '1' && data->map[y + 1][x] == '1' && data->map[y][x + 1] == '1' && data->map[y][x - 1] == '1')
-                 return (0);
-            }
-            x++;
-        }
-        y++;
-    }
-    return (1);
+	i = 0;
+	j = ft_strlen(t) - 1;
+	l = "reb.";
+	while (j > 0 && l[i])
+	{
+		if (t[j--] != l[i++])
+			return (0);
+	}
+	return (1);
 }
-// ft_strdup is a function from libft
 
-char	*ft_strdup(char *s1)
+// Get position x and y of player
+
+void	player_pos(t_vars *data)
 {
-    char	*str;
-    int		i;
+	int	x;
+	int	y;
 
-    i = 0;
-    str = malloc(sizeof(char) * (ft_strlen(s1) + 1));
-    if (!str)
-        return (NULL);
-    while (s1[i])
-    {
-        str[i] = s1[i];
-        i++;
-    }
-    str[i] = '\0';
-    return (str);
+	y = 0;
+	while (y < data->height)
+	{
+		x = 0;
+		while (x < data->width)
+		{
+			if (data->map[y][x] == 'P')
+			{
+				data->player_x = x;
+				data->player_y = y;
+				parsing_map(data, data->player_x, data->player_y);
+				return ;
+			}
+			x++;
+		}
+		y++;
+	}
 }
