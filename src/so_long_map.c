@@ -6,7 +6,7 @@
 /*   By: lduthill <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/29 10:38:36 by lduthill          #+#    #+#             */
-/*   Updated: 2023/04/25 11:51:46 by lduthill         ###   ########.fr       */
+/*   Updated: 2023/05/11 15:58:37 by lduthill         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,27 +17,24 @@
 int	size_of_map(t_vars *data, char **file)
 {
 	int		fd;
+	int		i;
 	char	*line;
 
+	i = 0;
 	fd = open(file[1], O_RDONLY);
 	line = get_next_line(fd);
-	data->width = ft_strlen(line);
+	data->width = ft_strlen(line) - 1;
 	data->height = 0;
 	while (line)
 	{
 		data->height++;
-		if ((int)ft_strlen(line) != data->width)
-		{
-			close(fd);
-			ft_free(data);
-			free(line);
-			return (1);
-		}
+		if ((int)ft_strlen(line) - 1 != data->width)
+			i = 1;
 		free(line);
 		line = get_next_line(fd);
 	}
 	close(fd);
-	return (0);
+	return (i);
 }
 
 // Get the map and allocate his memory
@@ -55,7 +52,6 @@ void	malloc_tab(t_vars *data, char **file)
 	{
 		data->map[i] = get_next_line(fd);
 		i++;
-		ft_printf("%s", data->map[i - 1]);
 	}
 	free(get_next_line(fd));
 	close(fd);
@@ -70,6 +66,8 @@ void	malloc_tab(t_vars *data, char **file)
 	close(fd);
 }
 
+// Free the memory of the map
+
 void	ft_free(t_vars *data)
 {
 	int	i;
@@ -83,4 +81,33 @@ void	ft_free(t_vars *data)
 	}
 	free(data->map);
 	free(data->map2);
+}
+
+// Make the endgame
+
+int	endgame(t_vars *data)
+{
+	int	x;
+	int	y;
+
+	x = 0;
+	y = 0;
+	while (y < data->height)
+	{
+		while (x < data->width)
+		{
+			if (data->collectables == 0 && \
+				data->map[data->player_y][data->player_x] == 'F')
+			{
+				ft_printf("Vous avez fini le jeu\n");
+				ft_printf("Vous avez fait : %i mouvements", data->nb_mouvement);
+				close_window(data);
+				return (1);
+			}
+			x++;
+		}
+		x = 0;
+		y++;
+	}
+	return (0);
 }

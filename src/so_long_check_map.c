@@ -6,7 +6,7 @@
 /*   By: lduthill <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/20 17:13:19 by lduthill          #+#    #+#             */
-/*   Updated: 2023/04/25 18:50:08 by lduthill         ###   ########.fr       */
+/*   Updated: 2023/05/11 15:29:33 by lduthill         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,9 +23,9 @@ int	check_walls(t_vars *data)
 	y = 0;
 	while (y < data->height)
 	{
-		if (y == 0 || y == x - 1)
+		if (y == 0 || y == x)
 		{
-			while (x < data->width - 1)
+			while (x < data->width)
 			{
 				if (data->map[y][x] != '1')
 					return (1);
@@ -34,7 +34,7 @@ int	check_walls(t_vars *data)
 		}
 		else
 		{
-			if (data->map[y][0] != '1' || data->map[y][data->width - 2] != '1')
+			if (data->map[y][0] != '1' || data->map[y][data->width - 1] != '1')
 				return (1);
 		}
 		y++;
@@ -44,14 +44,14 @@ int	check_walls(t_vars *data)
 
 // Check if the map have one collectible, one exit and one player
 
-int	check_collectable(t_vars *data)
+void	check_collectable(t_vars *data)
 {
 	int	x;
 	int	y;
 
 	data->collectables = 0;
-       	data->exit = 0;
-       	data->player = 0;
+	data->exit = 0;
+	data->player = 0;
 	y = 0;
 	while (y < data->height)
 	{
@@ -68,10 +68,7 @@ int	check_collectable(t_vars *data)
 		}
 		y++;
 	}
-	if (data->collectables <= 0 || data->exit != 1 || data->player != 1)
-		return (1);
 	data->nb_collect = data->collectables + 1;
-	return (0);
 }
 
 // Parse the map

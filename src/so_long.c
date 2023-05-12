@@ -6,39 +6,54 @@
 /*   By: lduthill <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/27 10:41:53 by lduthill          #+#    #+#             */
-/*   Updated: 2023/04/25 11:56:20 by lduthill         ###   ########.fr       */
+/*   Updated: 2023/05/11 16:03:18 by lduthill         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "so_long.h"
 
+void	mlx_render(t_vars data)
+{
+	data.mlx = mlx_init();
+	data.win = mlx_new_window(data.mlx, data.width * 64,
+			data.height * 64, "So Long !");
+	init_xpm(&data);
+	mlx_loop_hook(data.mlx, &put_img, &data);
+	mlx_hook(data.win, 2, 1, &key_controls, &data);
+	mlx_hook(data.win, 17, 1, close_window, &data);
+	mlx_loop(data.mlx);
+}
+
 int	main(int argc, char **argv)
 {
-	t_vars	vars;
+	t_vars	data;
 
-	// files and args verification
+	data.nb_mouvement = 0;
 	if (argc != 2)
-		return (ft_printf("Error: Map no advise"));
+		return (ft_printf("Error:\n Map no advise"));
 	if (ft_checkfile(argv[1]) == 0)
-		return (ft_printf("Error: Map is not .ber file"));
-	if (size_of_map(&vars, argv) == 1)
-		return (ft_printf("Error: Map is not rectangular"));
-	// Print the map in a 2d array
-	malloc_tab(&vars, argv);
-	// Map verification
-	if (check_walls(&vars) == 1)
-		return (ft_printf("Error: Leak in the shape"));
-	if (check_collectable(&vars) == 1)
-		return (ft_printf("Error: Collectables maps"));
-	player_pos(&vars);
-	if (vars.nb_collect != 0)
-		return (ft_printf("Error: Parsing error -> E or C not reachable"));
-	// Open frame and hook event
-	vars.mlx = mlx_init();
-	vars.win = mlx_new_window(vars.mlx, vars.width * 64,
-			vars.height * 64, "So Long !");
-	mlx_hook(vars.win, 2, 1, &key_controls, &vars);
-	mlx_hook(vars.win, 17, 1, close_window, &vars);
-	mlx_loop(vars.mlx);
+		return (ft_printf("Error:\n Map is not .ber file"));
+	if (size_of_map(&data, argv) == 1)
+		return (ft_printf("Error:\n Map is not rectangular"));
+	malloc_tab(&data, argv);
+	if (check_walls(&data) == 1)
+	{
+		ft_free(&data);
+		return (ft_printf("Error:\n Map is not surrounded by walls"));
+	}
+	check_collectable(&data);
+	player_pos(&data);
+	if (data.nb_collect != 0)
+	{
+		ft_free(&data);
+		return (ft_printf("Error:\n Parsing error -> E or C not reachable"));
+	}
+	if (data.collectables <= 0 || data.exit != 1 || data.player != 1)
+	{
+		ft_free(&data);
+		ft_printf("Error:\n Missing E, C or P");
+		exit(0);
+	}
+	mlx_render(data);
 	return (0);
 }
