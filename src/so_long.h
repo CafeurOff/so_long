@@ -6,7 +6,7 @@
 /*   By: lduthill <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/31 17:52:27 by lduthill          #+#    #+#             */
-/*   Updated: 2023/05/11 15:48:19 by lduthill         ###   ########.fr       */
+/*   Updated: 2023/05/15 17:38:36 by lduthill         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -54,6 +54,7 @@ void	player_pos(t_vars *data);
 void	parsing_map(t_vars *data, int x, int y);
 void	ft_free(t_vars *data);
 void	init_xpm(t_vars *data);
+int		check_letters(t_vars *data);
 int		put_img(t_vars *data);
 int		put_img_2(t_vars *data, int y, int x);
 int		player_mouvement_y(t_vars *data, int mouv);
@@ -65,5 +66,6 @@ int		size_of_map(t_vars *data, char **file);
 int		handle_keypress(int keysym, t_vars *data);
 int		endgame(t_vars *data);
 int		check_walls(t_vars *data);
+char	ft_errors(char *c, t_vars *data);
 
 #endif

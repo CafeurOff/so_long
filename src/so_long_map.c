@@ -6,7 +6,7 @@
 /*   By: lduthill <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/29 10:38:36 by lduthill          #+#    #+#             */
-/*   Updated: 2023/05/11 15:58:37 by lduthill         ###   ########.fr       */
+/*   Updated: 2023/05/16 14:36:46 by lduthill         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,6 +22,8 @@ int	size_of_map(t_vars *data, char **file)
 
 	i = 0;
 	fd = open(file[1], O_RDONLY);
+	if (fd == -1)
+		return (1);
 	line = get_next_line(fd);
 	data->width = ft_strlen(line) - 1;
 	data->height = 0;

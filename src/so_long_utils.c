@@ -6,7 +6,7 @@
 /*   By: lduthill <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/29 10:49:29 by lduthill          #+#    #+#             */
-/*   Updated: 2023/04/25 11:51:12 by lduthill         ###   ########.fr       */
+/*   Updated: 2023/05/22 10:51:08 by lduthill         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -55,4 +55,32 @@ void	player_pos(t_vars *data)
 		}
 		y++;
 	}
+}
+
+// Print error and free all the data
+
+char	ft_errors(char *c, t_vars *data)
+{
+	ft_printf("%s", c);
+	ft_free(data);
+	exit(0);
+	return (0);
+}
+
+// Close and free all the data
+
+int	close_window(t_vars *vars)
+{
+	mlx_destroy_image(vars->mlx, vars->img_walls);
+	mlx_destroy_image(vars->mlx, vars->img_road);
+	mlx_destroy_image(vars->mlx, vars->img_exit);
+	mlx_destroy_image(vars->mlx, vars->img_collec);
+	mlx_destroy_image(vars->mlx, vars->img_charac);
+	mlx_destroy_image(vars->mlx, vars->img_pc);
+	mlx_destroy_window(vars->mlx, vars->win);
+	mlx_destroy_display(vars->mlx);
+	ft_free(vars);
+	free(vars->mlx);
+	exit(0);
+	return (0);
 }

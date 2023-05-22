@@ -6,7 +6,7 @@
 /*   By: lduthill <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/20 17:13:19 by lduthill          #+#    #+#             */
-/*   Updated: 2023/05/11 15:29:33 by lduthill         ###   ########.fr       */
+/*   Updated: 2023/05/15 18:06:52 by lduthill         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -89,4 +89,28 @@ void	parsing_map(t_vars *data, int x, int y)
 	parsing_map(data, x - 1, y);
 	parsing_map(data, x, y + 1);
 	parsing_map(data, x, y - 1);
+}
+
+// Check if the map has a another letters
+
+int	check_letters(t_vars *data)
+{
+	int	x;
+	int	y;
+
+	y = 0;
+	while (y < data->height)
+	{
+		x = 0;
+		while (x < data->width)
+		{
+			if (!(data->map[y][x] == '0' || data->map[y][x] == '1'
+					|| data->map[y][x] == 'P' || data->map[y][x] == 'E'
+					|| data->map[y][x] == 'C'))
+				return (1);
+			x++;
+		}
+		y++;
+	}
+	return (0);
 }
