@@ -5,8 +5,8 @@
 /*                                                    +:+ +:+         +:+     */
 /*   By: lduthill <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2023/04/25 10:25:11 by lduthill          #+#    #+#             */
-/*   Updated: 2023/05/22 10:48:34 by lduthill         ###   ########.fr       */
+/*   Created: 2023/06/06 10:49:50 by lduthill          #+#    #+#             */
+/*   Updated: 2023/06/06 10:53:24 by lduthill         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,13 +16,13 @@ int	key_controls(int keycode, t_vars *data)
 {
 	if (keycode == XK_Escape)
 		close_window(data);
-	if (keycode == XK_Up)
+	if (keycode == XK_w)
 		data->nb_mouvement += player_mouvement_y(data, -1);
-	if (keycode == XK_Down)
+	if (keycode == XK_s)
 		data->nb_mouvement += player_mouvement_y(data, 1);
-	if (keycode == XK_Left)
+	if (keycode == XK_a)
 		data->nb_mouvement += player_mouvement_x(data, -1);
-	if (keycode == XK_Right)
+	if (keycode == XK_d)
 		data->nb_mouvement += player_mouvement_x(data, 1);
 	endgame(data);
 	return (data->nb_mouvement);
@@ -64,6 +64,34 @@ int	player_mouvement_x(t_vars *data, int mouv)
 		else
 			data->map[data->player_y][data->player_x] = 'P';
 		return (1);
+	}
+	return (0);
+}
+
+// End the game and close and free all mlx call
+
+int	endgame(t_vars *data)
+{
+	int	x;
+	int	y;
+
+	x = 0;
+	y = 0;
+	while (y < data->height)
+	{
+		while (x < data->width)
+		{
+			if (data->collectables == 0 && \
+					data->map[data->player_y][data->player_x] == 'F')
+			{
+				ft_printf("THE END\n");
+				close_window(data);
+				return (1);
+			}
+			x++;
+		}
+		x = 0;
+		y++;
 	}
 	return (0);
 }

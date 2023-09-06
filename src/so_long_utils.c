@@ -5,8 +5,8 @@
 /*                                                    +:+ +:+         +:+     */
 /*   By: lduthill <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2023/03/29 10:49:29 by lduthill          #+#    #+#             */
-/*   Updated: 2023/05/22 10:51:08 by lduthill         ###   ########.fr       */
+/*   Created: 2023/06/06 10:53:11 by lduthill          #+#    #+#             */
+/*   Updated: 2023/06/06 10:53:39 by lduthill         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -83,4 +83,19 @@ int	close_window(t_vars *vars)
 	free(vars->mlx);
 	exit(0);
 	return (0);
+}
+
+// Print count of mouvement in the window
+
+void	print_mouvement(t_vars *data)
+{
+	char	*str;
+
+	str = ft_itoa(data->nb_mouvement);
+	mlx_set_font(data->mlx, data->win, "-sony-*-*-*-*-*-24-230-*-*-*-*-*-1");
+	mlx_string_put(data->mlx, data->win, data->width,
+		data->height + 20, 0x00FFFFFF, "Vos mouvements :");
+	mlx_string_put(data->mlx, data->win, data->width + 200,
+		data->height + 21, 0x00FFFFFF, str);
+	free(str);
 }

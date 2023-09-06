@@ -1,5 +1,4 @@
 # so_long - A simple 2D game
-# Use this makefile to compile to game
 
 # Compile informations
 NAME		=	so_long
@@ -23,37 +22,41 @@ PRINTF_PATH =	printf/
 PRINTF_LIB	=	$(PRINTF_PATH)libftprintf.a
 
 #Some colors
+DEFAULT		=	\033[0;39m
 RED			=	\033[0;31m
 GREEN		=	\033[0;32m	
 
 # Our compile rules
 %.o: %.c
-	gcc $(FLAGS) -c $< -o $@
+	@echo "$(GREEN)Compiling $<$(DEFAULT)"
+	@gcc $(FLAGS) -c $< -o $@
 
 $(NAME): 	$(OBJS)
-	@echo "$(GREEN)Compiling $(NAME)..."
-	make -C $(GNL_PATH)
-	make -C $(PRINTF_PATH)
-	gcc $(FLAGS) $(OBJS) $(GNL_LIB) $(PRINTF_LIB) $(MLX_INCLUDE) -o $(NAME)
-	@echo "$(GREEN)$(NAME) compiled successfully!"
+	@make -C $(GNL_PATH) --no-print-directory -s
+	@make -C $(PRINTF_PATH) --no-print-directory -s
+	@gcc $(FLAGS) $(OBJS) $(GNL_LIB) $(PRINTF_LIB) $(MLX_INCLUDE) -o $(NAME)
+	@echo "$(GREEN)$(NAME) compiled successfully!$(DEFAULT)"
 
 # Here are mandatory rules
 all:		$(NAME)
 
 clean:
-	@echo "$(RED)Cleaning $(NAME)..."
-	rm -rf $(OBJS)
-	make clean -C $(GNL_PATH)
-	make clean -C $(PRINTF_PATH)
-	@echo "$(RED)$(NAME) cleaned successfully!"
+	@rm -rf $(OBJS)
+	@make clean -C $(GNL_PATH) --no-print-directory -s
+	@make clean -C $(PRINTF_PATH) --no-print-directory -s
+	@echo "$(RED)$(NAME) cleaned successfully!$(DEFAULT)"
 
 fclean:		clean
-	@echo "$(RED)Cleaning $(NAME)..."
-	rm -f $(NAME)
-	make fclean -C $(GNL_PATH)
-	make fclean -C $(PRINTF_PATH)
-	@echo "$(RED)$(NAME) cleaned successfully!"
+	@rm -f $(NAME)
+	@make fclean -C $(GNL_PATH) --no-print-directory -s
+	@make fclean -C $(PRINTF_PATH) --no-print-directory -s
+	@echo "$(RED)$(NAME) executable files cleaned!$(DEFAULT)"
+	@echo "$(RED)getnextline.a cleaned!$(DEFAULT)"
 
 re:			fclean all
+			@echo "$(GREEN)$(NAME) recompiled successfully!$(DEFAULT)"
 
-.PHONY:		all clean fclean re
+norm:
+	@norminette $(SRC_FOLDER) $(GNL_PATH) $(PRINTF_PATH) | grep -v Norme -B1 || true
+
+.PHONY:		all clean fclean re norm

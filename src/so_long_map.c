@@ -5,8 +5,8 @@
 /*                                                    +:+ +:+         +:+     */
 /*   By: lduthill <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2023/03/29 10:38:36 by lduthill          #+#    #+#             */
-/*   Updated: 2023/05/16 14:36:46 by lduthill         ###   ########.fr       */
+/*   Created: 2023/06/06 10:50:02 by lduthill          #+#    #+#             */
+/*   Updated: 2023/09/06 14:31:33 by lduthill         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,6 +25,8 @@ int	size_of_map(t_vars *data, char **file)
 	if (fd == -1)
 		return (1);
 	line = get_next_line(fd);
+	if (line == NULL)
+		return (1);
 	data->width = ft_strlen(line) - 1;
 	data->height = 0;
 	while (line)
@@ -83,33 +85,4 @@ void	ft_free(t_vars *data)
 	}
 	free(data->map);
 	free(data->map2);
-}
-
-// Make the endgame
-
-int	endgame(t_vars *data)
-{
-	int	x;
-	int	y;
-
-	x = 0;
-	y = 0;
-	while (y < data->height)
-	{
-		while (x < data->width)
-		{
-			if (data->collectables == 0 && \
-				data->map[data->player_y][data->player_x] == 'F')
-			{
-				ft_printf("Vous avez fini le jeu\n");
-				ft_printf("Vous avez fait : %i mouvements", data->nb_mouvement);
-				close_window(data);
-				return (1);
-			}
-			x++;
-		}
-		x = 0;
-		y++;
-	}
-	return (0);
 }
