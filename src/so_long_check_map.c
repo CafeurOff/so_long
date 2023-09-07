@@ -15,7 +15,6 @@
 /*
 	Here, we have a function to check if the map is sourrounded by walls
 */
-*/
 
 int	check_walls(t_vars *data)
 {
